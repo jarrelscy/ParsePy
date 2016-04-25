@@ -329,7 +329,10 @@ class ParseResource(ParseBase):
 
     def _init_attrs(self, args):
         for key, value in six.iteritems(args):
-            setattr(self, key, ParseType.convert_from_parse(key, value))
+            if key == 'className':
+                self.__class__.__name__ = ParseType.convert_from_parse(key, value).encode('ascii', 'ignore')    
+            else:
+                setattr(self, key, ParseType.convert_from_parse(key, value))
 
     def _to_native(self):
         return ParseType.convert_to_parse(self)
