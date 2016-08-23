@@ -15,7 +15,7 @@ from six.moves.urllib.request import Request, urlopen
 from six.moves.urllib.error import HTTPError
 from six.moves.urllib.parse import urlencode, urlparse
 
-import json
+import json, traceback
 
 from parse_rest import core
 
@@ -108,7 +108,7 @@ class ParseBase(object):
             data = kw and json.dumps(kw, default=date_handler) or "{}"
         else:
             data = _body
-        if http_verb == 'GET' and data:
+        if http_verb == 'GET' and data and len(urlencode(kw)) > 0:
             url += '?%s' % urlencode(kw)
             data = None
         else:
@@ -120,7 +120,7 @@ class ParseBase(object):
             'X-Parse-REST-API-Key': rest_key
         }
         headers.update(extra_headers or {})
-
+        url = url.replace('classes/User', 'users') # Jarrel edit
         request = Request(url, data, headers)
 
         if ACCESS_KEYS.get('session_token'):

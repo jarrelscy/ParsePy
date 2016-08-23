@@ -388,7 +388,7 @@ class ParseResource(ParseBase):
     @property
     def className(self):
         return self.__class__.__name__
-
+    
     @property
     def _absolute_url(self):
         return '%s/%s' % (self.__class__.ENDPOINT_ROOT, self.objectId)
